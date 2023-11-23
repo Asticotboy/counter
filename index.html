@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compteur</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            text-align: center;
+        }
+
+        #compteur {
+            font-family: "Lucida Console", "Courier New", monospace;
+            font-size: 50px;
+            text-align: center;
+            margin-top: 200px;
+        }
+
+        #title {
+            font-family: "Lucida Console", "Courier New", monospace;
+            font-size: 50px;
+            text-align: center;
+        }
+
+        #text {
+            font-family: "Lucida Console", "Courier New", monospace;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 200px;
+        }
+        
+
+
+    </style>
+</head>
+<body>
+    <h1 id="title">Compteur</h1>
+    <p id="text">Compteur avant la fin du projet SOLIDWORKS</p>
+    <h1 id="compteur"></h1>
+    
+
+    <script>
+        var fin = new Date("Nov 28, 2023 10:00:00").getTime();
+
+        var x = setInterval(function() {
+            var maintenant = new Date().getTime();
+            var distance = fin - maintenant;
+
+            var jours = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var heures = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var secondes = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("compteur").innerHTML = jours + "j " + heures + "h "
+            + minutes + "m " + secondes + "s ";
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("compteur").innerHTML = "EXPIRÉ";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
