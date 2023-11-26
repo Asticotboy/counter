@@ -1,55 +1,101 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Compteur</title>
     <style>
         body {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #0f0f0f;
+            color: #0ff;
+            font-family: 'Courier New', monospace;
         }
-        h1 {
+
+        h1#title,
+        h1#compteur,
+        h1#compteur2 {
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff;
+            font-size: 2.5em;
             text-align: center;
         }
+
+        p#text {
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff, 0 0 20px #0ff;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
         p {
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+            font-size: 1em;
             text-align: center;
         }
 
-        #compteur {
-            font-family: "Lucida Console", "Courier New", monospace;
-            font-size: 50px;
-            text-align: center;
-            margin-top: 200px;
+        @keyframes colorChange {
+            0% {
+                color: rgb(141, 255, 255);
+                text-shadow: 0 0 20px #0ff;
+            }
+
+            20% {
+                color: rgb(255, 137, 255);
+                text-shadow: 0 0 20px #f0f;
+            }
+
+            40% {
+                color: rgb(255, 255, 145);
+                text-shadow: 0 0 20px #ff0;
+            }
+
+            60% {
+                color: rgb(118, 255, 118);
+                text-shadow: 0 0 20px #0f0;
+            }
+
+            80% {
+                color: rgb(128, 128, 255);
+                text-shadow: 0 0 20px #00f;
+            }
+
+            100% {
+                color: rgb(136, 255, 255);
+                text-shadow: 0 0 20px #0ff;
+            }
         }
-        #compteur2 {
-            font-family: "Lucida Console", "Courier New", monospace;
-            font-size: 50px;
-            text-align: center;
-            margin-top: 200px;
+
+        h1#title {
+            animation: colorChange 8s infinite;
         }
 
-
-        #title {
-            font-family: "Lucida Console", "Courier New", monospace;
-            font-size: 50px;
-            text-align: center;
+        h1#compteur {
+            animation: colorChange 8s infinite 1s;
+            /* décalage de 1s */
         }
 
-        #text {
-            font-family: "Lucida Console", "Courier New", monospace;
-            font-size: 20px;
-            text-align: center;
-            margin-top: 200px;
+        h1#compteur2 {
+            animation: colorChange 8s infinite 2s;
+            /* décalage de 2s */
         }
-        
 
+        p#text {
+            animation: colorChange 8s infinite 3s;
+            /* décalage de 3s */
+        }
 
+        p {
+            animation: colorChange 8s infinite 4s;
+            /* décalage de 4s */
+        }
     </style>
 </head>
+
 <body>
     <h1 id="title">Compteur</h1>
     <p id="text">Compteur avant la fin du projet SOLIDWORKS</p>
     <h1 id="compteur"></h1>
-    
+
     <p>Bon courage à tous !</p>
 
     <p id="text">Pour ne pas devenir trop depressif compteur avant les vacances</p>
@@ -58,7 +104,7 @@
     <script>
         var fin = new Date("Nov 28, 2023 10:00:00").getTime();
 
-        var x = setInterval(function() {
+        var x = setInterval(function () {
             var maintenant = new Date().getTime();
             var distance = fin - maintenant;
 
@@ -68,7 +114,7 @@
             var secondes = Math.floor((distance % (1000 * 60)) / 1000);
 
             document.getElementById("compteur").innerHTML = jours + "j " + heures + "h "
-            + minutes + "m " + secondes + "s ";
+                + minutes + "m " + secondes + "s ";
 
             if (distance < 0) {
                 clearInterval(x);
@@ -80,7 +126,7 @@
 
         var fin2 = new Date("Dec 22, 2023 17:00:00").getTime();
 
-        var y = setInterval(function() {
+        var y = setInterval(function () {
             var maintenant2 = new Date().getTime();
             var distance2 = fin2 - maintenant2;
 
@@ -90,7 +136,7 @@
             var secondes2 = Math.floor((distance2 % (1000 * 60)) / 1000);
 
             document.getElementById("compteur2").innerHTML = jours2 + "j " + heures2 + "h "
-            + minutes2 + "m " + secondes2 + "s ";
+                + minutes2 + "m " + secondes2 + "s ";
 
             if (distance2 < 0) {
                 clearInterval(y);
@@ -99,4 +145,5 @@
         }, 1000);
     </script>
 </body>
+
 </html>
