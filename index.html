@@ -20,6 +20,13 @@
             text-align: center;
             margin-top: 200px;
         }
+        #compteur2 {
+            font-family: "Lucida Console", "Courier New", monospace;
+            font-size: 50px;
+            text-align: center;
+            margin-top: 200px;
+        }
+
 
         #title {
             font-family: "Lucida Console", "Courier New", monospace;
@@ -45,6 +52,9 @@
     
     <p>Bon courage à tous !</p>
 
+    <p id="text">Pour ne pas devenir trop depressif compteur avant les vacances</p>
+    <h1 id="compteur2"></h1>
+
     <script>
         var fin = new Date("Nov 28, 2023 10:00:00").getTime();
 
@@ -63,6 +73,28 @@
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("compteur").innerHTML = "EXPIRÉ";
+            }
+        }, 1000);
+
+
+
+        var fin2 = new Date("Dec 22, 2023 17:00:00").getTime();
+
+        var y = setInterval(function() {
+            var maintenant2 = new Date().getTime();
+            var distance2 = fin2 - maintenant2;
+
+            var jours2 = Math.floor(distance2 / (1000 * 60 * 60 * 24));
+            var heures2 = Math.floor((distance2 % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes2 = Math.floor((distance2 % (1000 * 60 * 60)) / (1000 * 60));
+            var secondes2 = Math.floor((distance2 % (1000 * 60)) / 1000);
+
+            document.getElementById("compteur2").innerHTML = jours2 + "j " + heures2 + "h "
+            + minutes2 + "m " + secondes2 + "s ";
+
+            if (distance2 < 0) {
+                clearInterval(y);
+                document.getElementById("compteur2").innerHTML = "EXPIRÉ";
             }
         }, 1000);
     </script>
