@@ -5,14 +5,15 @@
     <title>Compteur</title>
     <style>
         body {
-            background-color: #0f0f0f;
+            background-color: #000;
             color: #0ff;
             font-family: 'Courier New', monospace;
         }
 
         h1#title,
         h1#compteur,
-        h1#compteur2 {
+        h1#compteur2,
+        h1#compteur3 {
             color: #0ff;
             text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff;
             font-size: 2.5em;
@@ -89,6 +90,25 @@
             /* décalage de 4s */
         }
     </style>
+    <!-- style responsive -->
+    <style>
+        @media screen and (max-width: 400px) {
+            h1#title,
+            h1#compteur,
+            h1#compteur2 {
+                font-size: 2.5em;
+            }
+
+            p#text {
+                font-size: 1.8em;
+            }
+
+            p {
+                font-size: 1.5em;
+            }
+            
+        }
+    </style>
 </head>
 
 <body>
@@ -100,6 +120,15 @@
 
     <p id="text">Pour ne pas devenir trop depressif compteur avant les vacances</p>
     <h1 id="compteur2"></h1>
+
+    <!-- COMPTEUR DE JOURS SANS ANTIDPRESSEUR -->
+    <p id="text">Compteur de jours sans antidépresseur</p>
+    <h1 id="compteur3"></h1>
+
+
+    
+
+
 
     <script>
         var fin = new Date("Nov 28, 2023 10:00:00").getTime();
@@ -124,7 +153,7 @@
 
 
 
-        var fin2 = new Date("Dec 22, 2023 17:00:00").getTime();
+        var fin2 = new Date("Jul 8, 2024 17:00:00").getTime();
 
         var y = setInterval(function () {
             var maintenant2 = new Date().getTime();
@@ -143,7 +172,32 @@
                 document.getElementById("compteur2").innerHTML = "EXPIRÉ";
             }
         }, 1000);
+
+
+        
+        // COMPTEUR DE JOUR sans antidépresseur commençant le 27 janvier à 19h
+        var fin3 = new Date("Jan 27, 2024 19:00:00").getTime();
+
+        var z = setInterval(function () {
+            var maintenant3 = new Date().getTime();
+            var distance3 = maintenant3 - fin3;
+
+            var jours3 = Math.floor(distance3 / (1000 * 60 * 60 * 24));
+            var heures3 = Math.floor((distance3 % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes3 = Math.floor((distance3 % (1000 * 60 * 60)) / (1000 * 60));
+            var secondes3 = Math.floor((distance3 % (1000 * 60)) / 1000);
+
+            document.getElementById("compteur3").innerHTML = jours3 + "j " + heures3 + "h "
+                + minutes3 + "m " + secondes3 + "s ";
+
+            if (distance3 < 0) {
+                clearInterval(z);
+                document.getElementById("compteur3").innerHTML = "EXPIRÉ";
+            }
+        }, 1000);
     </script>
+
+
 </body>
 
 </html>

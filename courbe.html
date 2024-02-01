@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Définir le style du repère */
+        #repere {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            position: relative;
+        }
+
+        /* Définir le style des axes */
+        #x-axis {
+            width: 100%;
+            height: 1px;
+            background: black;
+            position: absolute;
+            top: 50%;
+        }
+
+        #y-axis {
+            width: 1px;
+            height: 100%;
+            background: black;
+            position: absolute;
+            left: 50%;
+        }
+
+        /* Définir le style des étiquettes des axes */
+        #x-label {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            font-size: 14px;
+        }
+
+        #y-label {
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            font-size: 14px;
+        }
+
+        /* Définir le style des bornes */
+        #xmin {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            font-size: 12px;
+        }
+
+        #xmax {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            font-size: 12px;
+        }
+
+        #ymin {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            font-size: 12px;
+        }
+
+        #ymax {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            font-size: 12px;
+        }
+
+        /* Définir le style du formulaire */
+        #formulaire {
+            margin: 20px;
+        }
+
+        #expression {
+            width: 300px;
+        }
+
+        #couleur {
+            width: 100px;
+        }
+
+        #tracer {
+            width: 100px;
+        }
+
+        #effacer {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="repere">
+        <div id="x-axis"></div>
+        <div id="y-axis"></div>
+        <div id="x-label">x</div>
+        <div id="y-label">y</div>
+        <div id="xmin">-10</div>
+        <div id="xmax">10</div>
+        <div id="ymin">-10</div>
+        <div id="ymax">10</div>
+    </div>
+    <div id="formulaire">
+        <label for="expression">Expression de la courbe (en fonction de x) :</label>
+        <input type="text" id="expression" name="expression" value="x^2">
+        <label for="couleur">Couleur de la courbe :</label>
+        <input type="color" id="couleur" name="couleur" value="#ff0000">
+        <button id="tracer">Tracer</button>
+        <button id="effacer">Effacer</button>
+    </div>
+    <script>
+        // Récupérer les éléments du DOM
+        var repere = document.getElementById("repere");
+        var xmin = document.getElementById("xmin");
+        var xmax = document.getElementById("xmax");
+        var ymin = document.getElementById("ymin");
+        var ymax = document.getElementById("ymax");
+        var expression = document.getElementById("expression");
+        var couleur = document.getElementById("couleur");
+        var tracer = document.getElementById("tracer");
+        var effacer = document.getElementById("effacer");
+
+        // Définir les constantes
+        var W = repere.offsetWidth; // Largeur du repère
+        var H = repere.offsetHeight; // Hauteur du repère
+        var DX = W / 2; // Décalage horizontal du repère
+        var DY = H / 2; // Décalage vertical du repère
+        var S = 20; // Echelle du repère
+
+        // Définir la fonction qui évalue une expression mathématique
+        function evaluer(expr, x) {
+            // Remplacer les puissances par la fonction Math.pow
+            expr = expr.replace(/(\w*)\^(\w*)/g, "Math.pow($1,$2)");
+            // Remplacer les fonctions trigonométriques par les fonctions Math correspondantes
+            expr = expr.replace(/sin|cos|tan|log|exp|sqrt/g, "Math.$&");
+            // Remplacer la variable x par sa valeur
+            expr = expr.replace(/x/g, x);
+            // Evaluer l'expression et retourner le résultat
+            return eval(expr);
+        }
+
+        // Définir la fonction qui trace une courbe
+        function tracerCourbe(expr, color) {
+            // Créer un élément canvas
+            var canvas = document.createElement("canvas");
+            // Définir la largeur et la hauteur du canvas
+            canvas.width = W;
+            canvas.height = H;
+            // Ajouter le canvas au repère
+            repere.appendChild(canvas);
+            // Récupérer le contexte graphique du canvas
+            var ctx = canvas.getContext("2d");
+            // Définir la couleur du tracé
+            ctx.strokeStyle = color;
+            // Définir l'épaisseur du tracé
+            ctx.lineWidth = 2;
+            // Commencer le tracé
+            ctx.beginPath();
+            // Parcourir les pixels du canvas
+            for (var i = 0; i < W; i++) {
+                // Calculer la valeur de x correspondant au pixel i
+                var x = (i - DX) / S;
+                // Calculer la valeur de y correspondant à l'expression
+                var y = evaluer(expr, x);
+                // Calculer la valeur du pixel j correspondant à y
+                var j = DY - y * S;
+                // Si c'est le premier pixel, déplacer le curseur
+                if (i == 0) {
+                    ctx.moveTo(i, j);
+                }
+                // Sinon, tracer une ligne jusqu'au pixel
+                else {
+                    ctx.lineTo(i, j);
+                }
+            }
+            // Terminer le tracé
+            ctx.stroke();
+        }
+
+        // Définir la fonction qui efface les courbes
+        function effacerCourbes() {
+            // Récupérer tous les éléments canvas du repère
+            var canvas = repere.getElementsByTagName("canvas");
+            // Parcourir les éléments canvas en partant de la fin
+            for (var i = canvas.length - 1; i >= 0; i--) {
+                // Supprimer l'élément canvas du repère
+                repere.removeChild(canvas[i]);
+            }
+        }
+
+        // Ajouter un écouteur d'événement sur le bouton tracer
+        tracer.addEventListener("click", function() {
+            // Récupérer la valeur de l'expression
+            var expr = expression.value;
+            // Récupérer la valeur de la couleur
+            var color = couleur.value;
+            // Tracer la courbe correspondante
+            tracerCourbe(expr, color);
+        });
+
+        // Ajouter un écouteur d'événement sur le bouton effacer
+        effacer.addEventListener("click", function() {
+            // Effacer les courbes
+            effacerCourbes();
+        });
+    </script>
+</body>
+</html>
